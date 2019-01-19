@@ -28,6 +28,7 @@
       vdir.add_backend(b1);
       vdir.add_backend(b2);
       这个集群算法主要用在高可用，预期效果在b1不可用时所有请求访问b2，但是实际测试没有达到预期
+      (后来测试发现需要增加probe探针,fallback才起作用)
     
     4.还有一种集群方案是dns
     
