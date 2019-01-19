@@ -1,3 +1,7 @@
+### Varnish安装
+    我是用的是32位Centos 6.10(Final)
+    可以通过二进制包或源码编译两种方式安装
+
 ### Varnish使用说明
 #### 启动命令
     varnishd -f example.vcl -s malloc,32M -T 127.0.0.1:2000 -a 0.0.0.0:1111
