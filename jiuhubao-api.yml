@@ -145,7 +145,7 @@ hystrix:
 eureka:
   server:
     host: 127.0.0.1
-    port: 8080
+    port: 8081
   # 注册服务中心用户名及密码
   security:
     username: jiuhubao
@@ -188,7 +188,7 @@ push:
 eureka:
   server:
     host: 47.112.208.167
-    port: 9000
+    port: 9001
   # 注册服务中心用户名及密码
   security:
     username: jiuhubao
@@ -231,7 +231,7 @@ push:
 eureka:
   server:
     host: 47.112.208.167
-    port: 9000
+    port: 9001
   # 注册服务中心用户名及密码
   security:
     username: jiuhubao
