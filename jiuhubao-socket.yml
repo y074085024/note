@@ -1,0 +1,281 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: jiuhubao-socket
+  mvc:
+    # 处理404，不直接返回页面
+    throw-exception-if-no-handler-found: true
+  resources:
+    # 是否开启资源映射
+    add-mappings: false
+  main:
+    # 配置banner显示
+    banner-mode: console
+  http:
+    encoding:
+      charset: UTF-8
+  # jackson时间格式化
+  jackson:
+    # 时区
+    time-zone: GMT+8
+    # 时间格式
+    date-format: yyyy-MM-dd HH:mm:ss
+  datasource:
+    druid:
+      # 初始化大小，最小，最大
+      initial-size: 10
+      min-idle: 10
+      max-active: 100
+      # 配置获取连接等待超时的时间
+      max-wait: 60000
+      #配置默认自动提交
+      default-auto-commit: true
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      # 用来检测连接是否有效的sql
+      validation-query: SELECT 1 FROM DUAL
+      # 申请连接的时候检测,如果空闲时间大于timeBetweenEvictionRunsMillis,执行validationQuery检测连接是否有效。如果检测失败, 则连接将被从池中去除.
+      test-while-idle: true
+      # 取出连接时进行检验,true:validation-query参数必须设置为非空字符串,开启影响性能
+      test-on-borrow: false
+      # 归还连接时进行检验,true:validation-query参数必须设置为非空字符串,开启影响性能
+      test-on-return: false
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      # 配置监控统计拦截的filters,stat:监控统计,logback:日志,wall:防火墙,防御sql注入
+      filters: stat,wall
+      # 通过connectProperties属性来打开mergeSql功能;慢SQL记录
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      connection-init-sqls: SET NAMES utf8mb4
+      # 合并多个DruidDataSource的监控数据
+      use-global-data-source-stat: true
+      # 是否自动回收超时连接
+      remove-abandoned: true
+      # 超时时间(以秒数为单位)
+      remove-abandoned-timeout: 180
+      # 是否在自动回收超时连接的时候打印连接的超时错误
+      log-abandoned: true
+  jpa:
+    # Specify the DBMS
+    database: MYSQL
+    generate-ddl: false
+    hibernate:
+      # 自动生成数据库表策略create/create-drop/update/validate/none
+      ddl-auto: none
+      # Naming strategy 命名规则
+      naming:
+        #[org.hibernate.cfg.ImprovedNamingStrategy
+        # org.hibernate.cfg.DefaultNamingStrategy
+        # org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl]
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      # stripped before adding them to the entity manager
+      hibernate:
+        # 输出所有SQL语句到控制台 true : false
+        show_sql: false
+        # 格式化输出sql语句 true : false
+        format_sql: false
+        # 指定数据库方言
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        # 是否开启懒加载
+        enable_lazy_load_no_trans: true
+    open-in-view: false
+  redis:
+    timeout: 3000
+    jedis:
+      pool:
+        #最大连接数(负数表示没限制)
+        max-active: 200
+        #最大阻塞等待时间(负数表示没限制)
+        max-wait: -1
+        #最大空闲
+        max-idle: 10
+        #最小空闲
+        min-idle: 0
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 30MB
+############################################
+## 服务器基本配置
+############################################
+server:
+  # 连接超时配置
+  connection-timeout: 30000
+  # 路径配置
+  servlet:
+    context-path: /socket
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 2000
+    min-spare-threads: 20
+#打开feign-hystrix
+feign:
+  hystrix:
+    enabled: true
+ribbon:
+  #对所有操作请求都进行重试,默认false
+  OkToRetryOnAllOperations: false
+  #负载均衡超时时间，默认值5000
+  ReadTimeout: 3000
+  #ribbon请求连接的超时时间，不包括首次调用，默认值2000
+  ConnectTimeout: 2000
+  #对当前实例的重试次数，默认0
+  MaxAutoRetries: 1
+  #对切换实例的重试次数，默认1
+  MaxAutoRetriesNextServer: 1
+#hystrix 配置
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          #如果enabled设置为false，则请求超时交给ribbon控制
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+            
+---
+server:
+  port: 8081
+logging:
+  config: classpath:config/logback-dev.xml
+eureka:
+  server:
+    host: 127.0.0.1
+    port: 8080
+  # 注册服务中心用户名及密码
+  security:
+    username: jiuhubao
+    password: password
+  # 注册服务中心配置
+  client:
+    serviceUrl:
+      defaultZone: http://${eureka.security.username}:${eureka.security.password}@${eureka.server.host}:${eureka.server.port}/eureka
+spring:
+  profiles: dev
+  datasource:
+    core:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://10.22.70.2:3306/jiuhu_core?serverTimezone=Asia/Shanghai&characterEncoding=utf-8&useSSL=false
+      username: ogemray
+      password: ajr@123
+  redis:
+    # Redis服务器连接地址
+    host: 10.22.70.115
+    # Redis服务器连接端口
+    port: 6379
+    # Redis数据库索引（默认为0）
+    database: 0
+    # Redis服务器连接密码
+    password:
+jwt:
+  #jwt 服务端密钥
+  secret: aml1aHUtYXBpLXYx
+  #jwt 过期时间,0为永久有效,单位:分钟
+  expiration: 0
+push:
+  host: 10.22.70.19
+  port: 8084
+  name: ws
+  remote-path: http://${push.host}:8083/socket
+    
+---
+
+server:
+  port: 9001
+logging:
+  config: classpath:config/logback-test.xml
+eureka:
+  server:
+    host: 47.112.208.167
+    port: 9000
+  # 注册服务中心用户名及密码
+  security:
+    username: jiuhubao
+    password: password
+  # 注册服务中心配置
+  client:
+    serviceUrl:
+      defaultZone: http://${eureka.security.username}:${eureka.security.password}@${eureka.server.host}:${eureka.server.port}/eureka
+spring:
+  profiles: test
+  datasource:
+    core:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://rm-wz911qjz60xy2rzae.mysql.rds.aliyuncs.com:3306/jiuhu_core_test?serverTimezone=Asia/Shanghai&characterEncoding=utf-8&useSSL=false
+      username: root
+      password: jiuhubao@123
+  redis:
+    # Redis服务器连接地址
+    host: r-wz93eb5ae5c6db24.redis.rds.aliyuncs.com
+    # Redis服务器连接端口
+    port: 6379
+    # Redis数据库索引（默认为0）
+    database: 0
+    # Redis服务器连接密码
+    password: jiuhu@123
+jwt:
+  #jwt 服务端密钥
+  secret: aml1aHUtYXBpLXYx
+  #jwt 过期时间,0为永久有效,单位:分钟
+  expiration: 2592000
+push:
+  host: 47.112.208.167
+  port: 9004
+  name: ws
+  remote-path: http://${push.host}:9003/socket
+
+---
+
+server:
+  port: 8081
+logging:
+  config: classpath:config/logback-dev.xml
+eureka:
+  server:
+    host: 47.112.208.167
+    port: 8080
+  # 注册服务中心用户名及密码
+  security:
+    username: jiuhubao
+    password: password
+  # 注册服务中心配置
+  client:
+    serviceUrl:
+      defaultZone: http://${eureka.security.username}:${eureka.security.password}@${eureka.server.host}:${eureka.server.port}/eureka
+spring:
+  profiles: pro
+  datasource:
+    core:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://rm-wz911qjz60xy2rzae.mysql.rds.aliyuncs.com:3306/jiuhu_core_test?serverTimezone=Asia/Shanghai&characterEncoding=utf-8&useSSL=false
+      username: root
+      password: jiuhubao@123
+  redis:
+    # Redis服务器连接地址
+    host: r-wz93eb5ae5c6db24.redis.rds.aliyuncs.com
+    # Redis服务器连接端口
+    port: 6379
+    # Redis数据库索引（默认为0）
+    database: 0
+    # Redis服务器连接密码
+    password: jiuhu@123
+jwt:
+  #jwt 服务端密钥
+  secret: aml1aHUtYXBpLXYx
+  #jwt 过期时间,0为永久有效,单位:分钟
+  expiration: 2592000
+push:
+  host: 47.112.208.167
+  port: 9004
+  name: ws
+  remote-path: http://${push.host}:9003/socket
