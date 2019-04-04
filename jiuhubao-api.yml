@@ -1,6 +1,26 @@
 spring:
   profiles:
     active: dev
+  application:
+    name: jiuhubao-api
+  mvc:
+    # 处理404，不直接返回页面
+    throw-exception-if-no-handler-found: true
+  resources:
+    # 是否开启资源映射
+    add-mappings: false
+  main:
+    # 配置banner显示
+    banner-mode: console
+  http:
+    encoding:
+      charset: UTF-8
+  # jackson时间格式化
+  jackson:
+    # 时区
+    time-zone: GMT+8
+    # 时间格式
+    date-format: yyyy-MM-dd HH:mm:ss
 ############################################
 ## 服务器基本配置
 ############################################
