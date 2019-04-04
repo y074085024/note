@@ -21,6 +21,8 @@ spring:
     time-zone: GMT+8
     # 时间格式
     date-format: yyyy-MM-dd HH:mm:ss
+  redis:
+    timeout: 3000
 ############################################
 ## 服务器基本配置
 ############################################
@@ -34,8 +36,6 @@ server:
     uri-encoding: UTF-8
     max-threads: 2000
     min-spare-threads: 20
-redis:
-  timeout: 3000
 #打开feign-hystrix
 feign:
   hystrix:
