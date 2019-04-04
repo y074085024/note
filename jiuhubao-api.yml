@@ -34,6 +34,8 @@ server:
     uri-encoding: UTF-8
     max-threads: 2000
     min-spare-threads: 20
+redis:
+  timeout: 3000
 #打开feign-hystrix
 feign:
   hystrix:
