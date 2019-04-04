@@ -146,6 +146,9 @@ logging:
 ---
 
 eureka:
+  server:
+    host: 127.0.0.1
+    port: 8080
   # 注册服务中心用户名及密码
   security:
     username: jiuhubao
@@ -153,8 +156,9 @@ eureka:
   # 注册服务中心配置
   client:
     serviceUrl:
-      defaultZone: http://${eureka.security.username}:${eureka.security.password}@127.0.0.1:8080/eureka
+      defaultZone: http://${eureka.security.username}:${eureka.security.password}@${eureka.server.host}:${eureka.server.port}/eureka
 spring:
+  profiles: dev
   datasource:
     core:
       type: com.alibaba.druid.pool.DruidDataSource
@@ -171,3 +175,99 @@ spring:
     database: 0
     # Redis服务器连接密码
     password:
+jwt:
+  #jwt 服务端密钥
+  secret: aml1aHUtYXBpLXYx
+  #jwt 过期时间,0为永久有效,单位:分钟
+  expiration: 0
+push:
+  host: 10.22.70.19
+  port: 8084
+  name: ws
+  remote-path: http://${push.host}:8083/socket
+    
+---
+
+eureka:
+  server:
+    host: 47.112.208.167
+    port: 9000
+  # 注册服务中心用户名及密码
+  security:
+    username: jiuhubao
+    password: password
+  # 注册服务中心配置
+  client:
+    serviceUrl:
+      defaultZone: http://${eureka.security.username}:${eureka.security.password}@${eureka.server.host}:${eureka.server.port}/eureka
+spring:
+  profiles: test
+ datasource:
+    core:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://rm-wz911qjz60xy2rzae.mysql.rds.aliyuncs.com:3306/jiuhu_core_test?serverTimezone=Asia/Shanghai&characterEncoding=utf-8&useSSL=false
+      username: root
+      password: jiuhubao@123
+  redis:
+    # Redis服务器连接地址
+    host: r-wz93eb5ae5c6db24.redis.rds.aliyuncs.com
+    # Redis服务器连接端口
+    port: 6379
+    # Redis数据库索引（默认为0）
+    database: 0
+    # Redis服务器连接密码
+    password: jiuhu@123
+jwt:
+  #jwt 服务端密钥
+  secret: aml1aHUtYXBpLXYx
+  #jwt 过期时间,0为永久有效,单位:分钟
+  expiration: 2592000
+push:
+  host: 47.112.208.167
+  port: 9004
+  name: ws
+  remote-path: http://${push.host}:9003/socket
+
+---
+
+eureka:
+  server:
+    host: 47.112.208.167
+    port: 9000
+  # 注册服务中心用户名及密码
+  security:
+    username: jiuhubao
+    password: password
+  # 注册服务中心配置
+  client:
+    serviceUrl:
+      defaultZone: http://${eureka.security.username}:${eureka.security.password}@${eureka.server.host}:${eureka.server.port}/eureka
+spring:
+  profiles: pro
+ datasource:
+    core:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://rm-wz911qjz60xy2rzae.mysql.rds.aliyuncs.com:3306/jiuhu_core_test?serverTimezone=Asia/Shanghai&characterEncoding=utf-8&useSSL=false
+      username: root
+      password: jiuhubao@123
+  redis:
+    # Redis服务器连接地址
+    host: r-wz93eb5ae5c6db24.redis.rds.aliyuncs.com
+    # Redis服务器连接端口
+    port: 6379
+    # Redis数据库索引（默认为0）
+    database: 0
+    # Redis服务器连接密码
+    password: jiuhu@123
+jwt:
+  #jwt 服务端密钥
+  secret: aml1aHUtYXBpLXYx
+  #jwt 过期时间,0为永久有效,单位:分钟
+  expiration: 2592000
+push:
+  host: 47.112.208.167
+  port: 9004
+  name: ws
+  remote-path: http://${push.host}:9003/socket
