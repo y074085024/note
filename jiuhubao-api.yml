@@ -21,6 +21,69 @@ spring:
     time-zone: GMT+8
     # 时间格式
     date-format: yyyy-MM-dd HH:mm:ss
+  datasource:
+    druid:
+      # 初始化大小，最小，最大
+      initial-size: 10
+      min-idle: 10
+      max-active: 100
+      # 配置获取连接等待超时的时间
+      max-wait: 60000
+      #配置默认自动提交
+      default-auto-commit: true
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      # 用来检测连接是否有效的sql
+      validation-query: SELECT 1 FROM DUAL
+      # 申请连接的时候检测,如果空闲时间大于timeBetweenEvictionRunsMillis,执行validationQuery检测连接是否有效。如果检测失败, 则连接将被从池中去除.
+      test-while-idle: true
+      # 取出连接时进行检验,true:validation-query参数必须设置为非空字符串,开启影响性能
+      test-on-borrow: false
+      # 归还连接时进行检验,true:validation-query参数必须设置为非空字符串,开启影响性能
+      test-on-return: false
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      # 配置监控统计拦截的filters,stat:监控统计,logback:日志,wall:防火墙,防御sql注入
+      filters: stat,wall
+      # 通过connectProperties属性来打开mergeSql功能;慢SQL记录
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      connection-init-sqls: SET NAMES utf8mb4
+      # 合并多个DruidDataSource的监控数据
+      use-global-data-source-stat: true
+      # 是否自动回收超时连接
+      remove-abandoned: true
+      # 超时时间(以秒数为单位)
+      remove-abandoned-timeout: 180
+      # 是否在自动回收超时连接的时候打印连接的超时错误
+      log-abandoned: true
+  jpa:
+    # Specify the DBMS
+    database: MYSQL
+    generate-ddl: false
+    hibernate:
+      # 自动生成数据库表策略create/create-drop/update/validate/none
+      ddl-auto: none
+      # Naming strategy 命名规则
+      naming:
+        #[org.hibernate.cfg.ImprovedNamingStrategy
+        # org.hibernate.cfg.DefaultNamingStrategy
+        # org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl]
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      # stripped before adding them to the entity manager
+      hibernate:
+        # 输出所有SQL语句到控制台 true : false
+        show_sql: false
+        # 格式化输出sql语句 true : false
+        format_sql: false
+        # 指定数据库方言
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        # 是否开启懒加载
+        enable_lazy_load_no_trans: true
+    open-in-view: false
   redis:
     timeout: 3000
     jedis:
