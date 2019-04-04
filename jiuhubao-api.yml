@@ -143,6 +143,8 @@ hystrix:
 ---
 server:
   port: 8081
+logging:
+  config: classpath:config/logback-dev.xml
 eureka:
   server:
     host: 127.0.0.1
@@ -188,6 +190,8 @@ push:
 
 server:
   port: 9001
+logging:
+  config: classpath:config/logback-test.xml
 eureka:
   server:
     host: 47.112.208.167
@@ -233,6 +237,8 @@ push:
 
 server:
   port: 8081
+logging:
+  config: classpath:config/logback-dev.xml
 eureka:
   server:
     host: 47.112.208.167
